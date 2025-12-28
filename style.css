@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    font-family: Arial, Helvetica, sans-serif;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+
+}:root{
+    --color1 : #ff3f6c;
+    --color2 : #2c3e50;
+    --color3 : #555;
+}
+header{
+    width: 100%;
+    position: sticky;
+    top: 0;
+    background: var(--color3);
+    padding: 20px 3%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header .logo{
+    color: var(--color2);
+    font-size: 2.em;
+    font-weight: 700;
+    line-height: 1.5;
+
+}
+.header .logo span{
+    color: var(--color1);
+}
+.header .nav a{
+    color: aliceblue;
+    font-size: 1.2em;
+    margin-right: 15px;
+
+    
+}
+.header .nav a:hover{
+    color: var(--color1);
+}
