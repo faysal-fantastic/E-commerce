@@ -12,6 +12,10 @@
     --color2 : #2c3e50;
     --color3 : #555;
 }
+body{
+    background: #ddd;
+    scroll-behavior: smooth;
+}
 header{
     width: 100%;
     position: sticky;
@@ -21,6 +25,7 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.4) ;
 }
 .header .logo{
     color: var(--color2);
@@ -41,4 +46,119 @@ header{
 }
 .header .nav a:hover{
     color: var(--color1);
+}
+.header .icons .fa {
+    font-size: 1.5em;
+    color: white;
+    margin-right: 15px;
+
+    
+}
+.header .icons .fa:hover{
+    color: var(--color1);
+    cursor: pointer;
+}
+section{
+    padding: 30px 3%;
+}
+
+section.hero{
+    height: 90vh;
+    background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('images/nng.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+.hero .hero-container{
+    max-width: 800px;
+    text-align: center;
+}
+.hero h2{
+    color: white;
+    font-size: 3em;
+    font-weight:900;
+    margin-bottom: 15px;
+
+}
+.hero p{
+    color: seashell;
+    font-size: 1.3em;
+    margin-bottom: 40px;
+
+}
+.btn{
+    padding: 15px 25px;
+    background: blue;
+    color:white;
+    border-radius: 8px;
+
+    
+}
+
+.btn:hover{
+    background: rgb(2, 2, 110);
+    letter-spacing: 5px;
+}
+
+/* featured products style */
+
+.featured h2{
+    text-align: center;
+    font-size: 2.5em;
+    color: var(--color3);
+    margin-bottom: 15px;
+}
+
+.featured .products{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.featured .products .product{
+     background: #fff;
+    /* width: 20%; */
+    flex: 1;
+    border: 1px solid var(--color2);
+    border-radius: 8px;
+}
+.featured .products .product :hover{
+    transform: translateY(-10px);
+}
+.featured .products .product img{
+    width: 100%;
+    height: 250px;
+    border-radius: 8px;
+}
+.featured .products .product img:hover{
+    transform: scale(1.05);
+}
+.featured .products .product .product-image{
+    overflow: hidden;
+}
+
+.featured .products .product .product-info{
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.featured .product-info h3{
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+.featured .product-rating{
+    color: orange;
+    
+}
+.price .current-price{
+    color: rgb(16, 201, 16);
+    font-size: 1.5em;
+}
+
+.price .previous-price{
+    text-decoration: line-through;
+    color: var(--color2);
 }
