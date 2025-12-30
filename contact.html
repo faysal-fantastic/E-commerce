@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - FowziStore</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+
+<body>
+    <header class="header">
+        <h2 class="logo">
+            <span>Fowzi</span>Store
+        </h2>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="#">Shop</a>
+            <a href="#">Categories</a>
+            <a href="#">Sale</a>
+            <a href="contact.html">Contact</a>
+            <a href="#">New Arrivals</a>
+        </nav>
+        <div class="icons">
+            <i class="fa fa-search"></i>
+            <i class="fa fa-user"></i>
+            <i class="fa fa-shopping-cart"></i>
+        </div>
+    </header>
+
+    <section class="contact-page">
+        <div class="contact-hero animate-on-scroll">
+            <h1>Get in Touch</h1>
+            <p>We are here to help you finding the best products.</p>
+        </div>
+
+        <div class="contact-content">
+            <!-- Company Explanation & Info -->
+            <div class="contact-info animate-on-scroll">
+                <h2>About FowziStore</h2>
+                <p class="company-desc">
+                    FowziStore is your premier destination for high-quality technology, fashion, and home essentials.
+                    We pride ourselves on providing exceptional customer service and fast shipping.
+                    Whether you have a question about an order or just want to say hello, we'd love to hear from you!
+                </p>
+
+                <div class="contact-cards-mini">
+                    <div class="mini-card">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+252 61 251 7009</p>
+                            <button class="copy-btn-mini" data-clipboard-text="+252612517009">Copy</button>
+                        </div>
+                    </div>
+                    <div class="mini-card">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>faasuuyare120@gmail.com</p>
+                            <button class="copy-btn-mini" data-clipboard-text="faasuuyare120@gmail.com">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form-container animate-on-scroll" style="transition-delay: 0.2s;">
+                <h2>Send us a Message</h2>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" placeholder="mohamed" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="mohamed@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="3" placeholder="How can we help you?" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message <i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+        // Mini script for the specific copy buttons on this page if they differ slightly, 
+        // or just reuse the main script if classes match. 
+        // Reusing main script logic by adding 'copy-btn' class would be best, 
+        // but let's make sure the main script handles generic '.copy-btn-mini' too or we just use '.copy-btn'.
+        // I will update script.js to handle .copy-btn-mini or just use .copy-btn in HTML.
+        // Let's use simple inline script for the new mini buttons to ensure it works immediately without modifying script.js too much yet.
+
+        document.querySelectorAll('.copy-btn-mini').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const text = btn.getAttribute('data-clipboard-text');
+                navigator.clipboard.writeText(text).then(() => {
+                    const original = btn.innerText;
+                    btn.innerText = 'Copied!';
+                    setTimeout(() => btn.innerText = original, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
