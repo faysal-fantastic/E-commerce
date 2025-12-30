@@ -64,7 +64,7 @@ section{
 
 section.hero{
     height: 90vh;
-    background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('images/nng.jpeg');
+    background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('images/business.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
