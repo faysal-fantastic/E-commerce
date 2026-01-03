@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | Fowzi Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .cart-container {
+            margin: 50px auto;
+        }
+
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .cart-table th {
+            background: var(--primary-dark);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .cart-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-product {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cart-product img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .cart-qty input {
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .remove-btn {
+            color: #dc3545;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1.1rem;
+        }
+
+        .remove-btn:hover {
+            text-decoration: underline;
+        }
+
+        .cart-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .total-row {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .cart-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container navbar">
+            <a href="index.html" class="logo">Fowzi<span>Store</span></a>
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Shop</a></li>
+                    <li><a href="cart.html" class="active cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+        </div>
+    </header>
+
+    <div class="container cart-container">
+        <h1>Shopping Cart</h1>
+        <div id="cartContent">
+            <!-- Table will be injected here -->
+        </div>
+    </div>
+
+    <!-- Footer same as others -->
+    <footer class="footer">
+        <!-- ... keeping footer consistent via copy/paste ideally or JS include, but rewriting for standalone ... -->
+        <div class="container footer-container">
+            <div class="footer-col">
+                <h3>FowziStore</h3>
+                <p>Premium Quality.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="products.html">Shop</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 FowziStore. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCart();
+
+            document.getElementById('hamburger').addEventListener('click', () => {
+                document.getElementById('navLinks').classList.toggle('active');
+            });
+        });
+
+        function renderCart() {
+            const cartContent = document.getElementById('cartContent');
+            const cart = getCart();
+
+            if (cart.length === 0) {
+                cartContent.innerHTML = `<p>Your cart is empty. <a href="products.html" style="color:var(--primary-color);">Start Shopping</a></p>`;
+                return;
+            }
+
+            let html = `
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            let total = 0;
+
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                html += `
+                    <tr>
+                        <td>
+                            <div class="cart-product">
+                                <img src="${item.image}" alt="${item.name}">
+                                <div>${item.name}</div>
+                            </div>
+                        </td>
+                        <td>$${item.price.toFixed(2)}</td>
+                        <td class="cart-qty">
+                            <input type="number" min="1" value="${item.quantity}" onchange="updateItemQty(${item.id}, this.value)">
+                        </td>
+                        <td>$${subtotal.toFixed(2)}</td>
+                        <td><button class="remove-btn" onclick="removeItem(${item.id})"><i class="fas fa-trash"></i> Remove</button></td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+
+                <div class="cart-summary">
+                    <h3>Cart Total</h3>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>$${total.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span>Free</span>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span>Total</span>
+                        <span>$${total.toFixed(2)}</span>
+                    </div>
+                    <a href="checkout.html" class="btn" style="width: 100%; text-align: center;">Proceed to Checkout</a>
+                </div>
+            `;
+
+            cartContent.innerHTML = html;
+        }
+
+        function updateItemQty(id, qty) {
+            let cart = getCart();
+            const item = cart.find(i => i.id == id);
+            if (item) {
+                item.quantity = parseInt(qty);
+                if (item.quantity < 1) item.quantity = 1;
+                saveCart(cart);
+                renderCart();
+            }
+        }
+
+        function removeItem(id) {
+            let cart = getCart();
+            cart = cart.filter(i => i.id != id);
+            saveCart(cart);
+            renderCart();
+        }
+    </script>
+</body>
+
+</html>

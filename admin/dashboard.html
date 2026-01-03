@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Fowzi Store</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--primary-dark);
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 40px;
+            font-size: 1.5rem;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            color: #ddd;
+            font-size: 1.1rem;
+            display: block;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background: #f4f6f8;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .bg-warning {
+            background: orange;
+        }
+
+        .bg-success {
+            background: green;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 0.8rem;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>Fowzi Admin</h2>
+            <ul>
+                <li><a href="#" class="active" onclick="switchTab('products')">Products</a></li>
+                <li><a href="#" onclick="switchTab('orders')">Orders</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="admin-header">
+                <h1 id="pageTitle">Product Management</h1>
+                <button class="btn" style="display:none;" id="addProductBtn" onclick="openModal()">+ Add
+                    Product</button>
+            </div>
+
+            <!-- Products Tab -->
+            <div id="productsTab" class="tab-content">
+                <div class="card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody">
+                            <!-- JS Injected -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Orders Tab -->
+            <div id="ordersTab" class="tab-content" style="display: none;">
+                <div class="card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderTableBody">
+                            <!-- JS Injected -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px;">Add New Product</h2>
+            <form id="addProductForm">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="pName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" id="pPrice" class="form-control" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="pCategory" class="form-control">
+                        <option value="electronics">Electronics</option>
+                        <option value="fashion">Fashion</option>
+                        <option value="home">Home</option>
+                        <option value="beauty">Beauty</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Image URL (e.g., images/apple.jpg)</label>
+                    <input type="text" id="pImage" class="form-control" value="images/apple.jpg" required>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn">Save</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/admin.js"></script>
+    <script>
+        // Auth Check
+        if (!checkAuth()) {
+            window.location.href = 'login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAdminProducts();
+            renderOrders();
+            document.getElementById('addProductBtn').style.display = 'block';
+
+            // Modal logic
+            document.getElementById('addProductForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const product = {
+                    name: document.getElementById('pName').value,
+                    price: parseFloat(document.getElementById('pPrice').value),
+                    category: document.getElementById('pCategory').value,
+                    image: document.getElementById('pImage').value,
+                    rating: 4.5,
+                    featured: true
+                };
+                addProduct(product);
+            });
+        });
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.sidebar a').forEach(el => el.classList.remove('active'));
+
+            if (tab === 'products') {
+                document.getElementById('productsTab').style.display = 'block';
+                document.getElementById('pageTitle').textContent = 'Product Management';
+                document.getElementById('addProductBtn').style.display = 'block';
+                event.target.classList.add('active');
+            } else {
+                document.getElementById('ordersTab').style.display = 'block';
+                document.getElementById('pageTitle').textContent = 'Order History';
+                document.getElementById('addProductBtn').style.display = 'none';
+                event.target.classList.add('active');
+            }
+        }
+
+        function openModal() {
+            document.getElementById('productModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

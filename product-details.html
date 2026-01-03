@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Fowzi Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .product-details-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin: 50px auto;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .product-details-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .details-image {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .details-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+
+        .details-price {
+            font-size: 2rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .details-description {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .qty-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ddd;
+            background: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .qty-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .qty-input {
+            width: 50px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 1.1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container navbar">
+            <a href="index.html" class="logo">Fowzi<span>Store</span></a>
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Shop</a></li>
+                    <li><a href="cart.html" class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+        </div>
+    </header>
+
+    <div class="container product-details-container" id="productDetails">
+        <!-- Content Injected -->
+        <p>Loading product...</p>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            const container = document.getElementById('productDetails');
+
+            const product = getProducts().find(p => p.id == productId);
+
+            if (!product) {
+                container.innerHTML = '<h2>Product not found</h2><a href="products.html" class="btn">Back to Shop</a>';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="details-image">
+                    <img src="${product.image}" alt="${product.name}">
+                </div>
+                <div class="details-info">
+                    <h1>${product.name}</h1>
+                    <div class="product-rating" style="font-size: 1.2rem; margin-bottom: 20px;">
+                        ${getStarRating(product.rating)}
+                        <span>(${product.rating} Reviews)</span>
+                    </div>
+                    <span class="details-price">$${product.price.toFixed(2)}</span>
+                    <p class="details-description">${product.description || 'No description available for this amazing product.'}</p>
+                    
+                    <div class="quantity-control">
+                        <button class="qty-btn" onclick="updateQty(-1)">-</button>
+                        <input type="number" id="qtyInput" class="qty-input" value="1" min="1" readonly>
+                        <button class="qty-btn" onclick="updateQty(1)">+</button>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn" onclick="addToCartDetailed(${product.id})">Add to Cart</button>
+                        <a href="products.html" class="btn btn-outline">Continue Shopping</a>
+                    </div>
+                </div>
+            `;
+
+            // Mobile Menu
+            document.getElementById('hamburger').addEventListener('click', () => {
+                document.getElementById('navLinks').classList.toggle('active');
+            });
+        });
+
+        function updateQty(change) {
+            const input = document.getElementById('qtyInput');
+            let val = parseInt(input.value);
+            val += change;
+            if (val < 1) val = 1;
+            input.value = val;
+        }
+
+        function addToCartDetailed(id) {
+            const qty = parseInt(document.getElementById('qtyInput').value);
+            // We need to support custom qty in addToCart or just call it multiple times
+            // Updating app.js to support qty would be better, but for simplicity:
+            // Let's manually update storage here or modify logic.
+            // I'll stick to the core logic rule: LocalStorage.
+
+            let cart = getCart();
+            const product = getProducts().find(p => p.id == id);
+            const existingItem = cart.find(item => item.id == id);
+
+            if (existingItem) {
+                existingItem.quantity += qty;
+            } else {
+                cart.push({ ...product, quantity: qty });
+            }
+
+            saveCart(cart);
+            alert(`${qty} x ${product.name} added to cart!`);
+        }
+    </script>
+</body>
+
+</html>

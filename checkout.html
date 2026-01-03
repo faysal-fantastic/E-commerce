@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Fowzi Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            margin: 50px auto;
+        }
+
+        @media(max-width: 900px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .checkout-form {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .order-summary {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+
+        .form-section-title {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            color: var(--primary-dark);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container navbar">
+            <a href="index.html" class="logo">Fowzi<span>Store</span></a>
+        </div>
+    </header>
+
+    <div class="container checkout-container">
+        <!-- Billing Form -->
+        <div class="checkout-form">
+            <h2 class="form-section-title">Billing Details</h2>
+            <form id="checkoutForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="cName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="cEmail" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="cPhone" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="cAddress" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" id="cCity" class="form-control" required>
+                </div>
+
+                <h2 class="form-section-title" style="margin-top: 30px;">Payment Method</h2>
+                <div class="form-group">
+                    <label>
+                        <input type="radio" name="payment" value="cod" checked> Cash on Delivery
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="payment" value="mobile"> Mobile Money (EVC/Zaad)
+                    </label>
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%; margin-top: 20px;">Place Order</button>
+            </form>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h2 class="form-section-title">Order Summary</h2>
+            <div id="orderItems">
+                <!-- Injected via JS -->
+            </div>
+            <div class="total-row" id="orderTotal"
+                style="margin-top: 20px; font-weight: bold; border-top: 1px solid #ddd; padding-top: 15px; display: flex; justify-content: space-between;">
+                <span>Total</span>
+                <span>$0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cart = getCart();
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                window.location.href = 'products.html';
+                return;
+            }
+
+            const orderItems = document.getElementById('orderItems');
+            const orderTotal = document.getElementById('orderTotal');
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                const div = document.createElement('div');
+                div.className = 'summary-item';
+                div.innerHTML = `<span>${item.name} x ${item.quantity}</span> <span>$${(item.price * item.quantity).toFixed(2)}</span>`;
+                orderItems.appendChild(div);
+            });
+
+            orderTotal.innerHTML = `<span>Total</span> <span>$${total.toFixed(2)}</span>`;
+
+            // Handle Form Submit
+            document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const btn = e.target.querySelector('button');
+                btn.textContent = 'Processing...';
+                btn.disabled = true;
+
+                const orderData = {
+                    customer_name: document.getElementById('cName').value,
+                    customer_email: document.getElementById('cEmail').value,
+                    customer_phone: document.getElementById('cPhone').value,
+                    address: document.getElementById('cAddress').value + ', ' + document.getElementById('cCity').value,
+                    total_amount: total,
+                    payment_method: document.querySelector('input[name="payment"]:checked').value,
+                    items: cart
+                };
+
+                try {
+                    const response = await fetch('api/orders.php', {
+                        method: 'POST',
+                        body: JSON.stringify(orderData),
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        localStorage.removeItem('cart');
+                        alert('Order Placed Successfully! Your Order ID is ' + result.order_id);
+                        window.location.href = 'index.html';
+                    } else {
+                        alert('Error: ' + result.message);
+                        btn.textContent = 'Place Order';
+                        btn.disabled = false;
+                    }
+
+                } catch (error) {
+                    console.error(error);
+                    alert('Network error. Please try again.');
+                    btn.textContent = 'Place Order';
+                    btn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

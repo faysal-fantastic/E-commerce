@@ -1,144 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-commerce</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-     integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-      crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>BROTHERS STORE| Premium E-commerce</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+    <!-- Header -->
     <header class="header">
-        <h2 class="logo">
-         <span>Fowzi</span>Store
-        </h2>
-        <nav class="nav">
-            <a href="#">Home</a>
-            <a href="#">Shop</a>
-            <a href="#">Categories</a>
-            <a href="#">Sale</a>
-            <a href="#">Contact</a>
-            <a href="#">New Arrivals</a>
-        </nav>
-        <div class="icons">
-            <i class="fa fa-search"></i>
-            <i class="fa fa-user"></i>
-            <i class="fa fa-shopping-cart"></i>
+        <div class="container navbar">
+            <a href="index.html" class="logo"><span>BROTHERS STORE</span></a>
+
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="products.html">Shop</a></li>
+                    <li><a href="products.html?category=electronics">Electronics</a></li>
+                    <li><a href="products.html?category=fashion">Fashion</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-icons">
+                <div class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <i class="fas fa-search" id="searchIcon"></i>
+                <a href="admin/login.html" title="Admin Login"><i class="fas fa-user"></i></a>
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
         </div>
     </header>
-    <!-- end of header-->
-     <!--hero section starts here-->
 
-     <section class="hero">
-     <div class="hero-container">
-        <h2>Discover Amazing Products</h2>
-     <p>Shop the latest trends in technology, fashion , and Home
-        essentials. Enjoy free shipping on orders over $50!
-     </p>
-      <a href="#" class="btn">Shop Now</a>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Discover Premium Quality</h1>
+            <p>Shop the latest trends in technology, fashion, and home essentials. Experience the best shopping journey
+                with BROTHERS STORE.</p>
+            <a href="products.html" class="btn">Shop Now</a>
+        </div>
+    </section>
 
-     </div>
-     </section>
-
-     <!--hero section ends here-->
-     <!-- featured products  starts here-->
-
-     <section class="featured">
-        <h2>Featured Products</h2>
-        <div class="products">
-            <div class="product">
-                <div class="product-image">
-                <img src="/images/apple.jpg" alt="Smart Watch">
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Browse Categories</h2>
+            <div class="category-grid">
+                <div class="category-card" onclick="location.href='products.html?category=electronics'">
+                    <i class="fas fa-laptop"></i>
+                    <h3>Electronics</h3>
+                    <p>Latest Gadgets & Tech</p>
                 </div>
-               <div class="product-info">
-                    <h3>Smart Watch</h3>
-             <div class="product-rating">
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star-half-alt"></i>
-                <span>(4.5)</span>
-             </div>
-                <p class="price">
-                    <span class="current-price">$99.99</span>
-                    <span class="previous-price">$999.99</span>
-                </p>
-                <a href="#" class="btn">Add to Cart</a>
-               </div>
-
-            </div>
-            <div class="product">
-                <div class="product-image">
-                <img src="/images/shoes.jpg" alt="Smart Watch">
+                <div class="category-card" onclick="location.href='products.html?category=fashion'">
+                    <i class="fas fa-tshirt"></i>
+                    <h3>Fashion</h3>
+                    <p>Trendy & Stylish</p>
                 </div>
-               <div class="product-info">
-                    <h3>Smart Watch</h3>
-             <div class="product-rating">
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star-half-alt"></i>
-                <span>(4.5)</span>
-             </div>
-                <p class="price">
-                    <span class="current-price">$99.99</span>
-                    <span class="previous-price">$999.99</span>
-                </p>
-                <a href="#" class="btn">Add to Cart</a>
-               </div>
-
-            </div>
-            <div class="product">
-                <div class="product-image">
-                <img src="/images/canon.jpg" alt="Smart Watch">
+                <div class="category-card" onclick="location.href='products.html?category=home'">
+                    <i class="fas fa-couch"></i>
+                    <h3>Home & Living</h3>
+                    <p>Comfort for your Home</p>
                 </div>
-               <div class="product-info">
-                    <h3>Smart Watch</h3>
-             <div class="product-rating">
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star-half-alt"></i>
-                <span>(4.5)</span>
-             </div>
-                <p class="price">
-                    <span class="current-price">$99.99</span>
-                    <span class="previous-price">$999.99</span>
-                </p>
-                <a href="#" class="btn">Add to Cart</a>
-               </div>
-
-            </div>
-            <div class="product">
-                <div class="product-image">
-                <img src="/images/gen.jpg" alt="Smart Watch">
+                <div class="category-card" onclick="location.href='products.html?category=beauty'">
+                    <i class="fas fa-pump-soap"></i>
+                    <h3>Beauty</h3>
+                    <p>Skincare & Makeup</p>
                 </div>
-               <div class="product-info">
-                    <h3>Smart Watch</h3>
-             <div class="product-rating">
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star"></i>
-                <i class="fas-fa-star-half-alt"></i>
-                <span>(4.5)</span>
-             </div>
-                <p class="price">
-                    <span class="current-price">$99.99</span>
-                    <span class="previous-price">$999.99</span>
-                </p>
-                <a href="#" class="btn">Add to Cart</a>
-               </div>
-
             </div>
         </div>
-     </section>
+    </section>
 
-    
+    <!-- Featured Products -->
+    <section class="products-section">
+        <div class="container">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="product-grid" id="featuredProducts">
+                <!-- Products will be injected by JS -->
+                <!-- Loading State Placeholder -->
+                <p style="text-align:center; width:100%; grid-column:1/-1;">Loading products...</p>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="products.html" class="btn btn-secondary">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter"
+        style="background: var(--primary-color); padding: 60px 0; text-align: center; color: white;">
+        <div class="container">
+            <h2 style="margin-bottom: 20px;">Subscribe to our Newsletter</h2>
+            <p style="margin-bottom: 30px;">Get updates on latest offers and new arrivals.</p>
+            <form style="max-width: 500px; margin: 0 auto; display: flex; gap: 10px;">
+                <input type="email" placeholder="Enter your email" required
+                    style="flex: 1; padding: 12px; border: none; border-radius: 4px;">
+                <button type="submit" class="btn" style="background: var(--primary-dark);">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-col">
+                <h3>FowziStore</h3>
+                <p>Your one-stop shop for premium products. Quality guaranteed and fast delivery throughout Somalia.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="products.html">Shop</a>
+                <a href="cart.html">Cart</a>
+                <a href="admin/login.html">Admin</a>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Mogadishu, Somalia</p>
+                <p><i class="fas fa-phone"></i> +252 61 5000000</p>
+                <p><i class="fas fa-envelope"></i> info@fowzistore.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 FowziStore. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Simple script to toggle menu on mobile
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // Initialize Home Page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFeaturedProducts();
+            updateCartCount();
+        });
+
+        function renderFeaturedProducts() {
+            const container = document.getElementById('featuredProducts');
+            // Check if products exist in global scope (from data.js)
+            const featured = products.filter(p => p.featured).slice(0, 4);
+
+            container.innerHTML = featured.map(product => createProductCard(product)).join('');
+        }
+    </script>
 </body>
+
 </html>

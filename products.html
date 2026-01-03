@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop All Products | Fowzi Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .page-header {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .shop-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        @media (max-width: 900px) {
+            .shop-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .filter-sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+
+        .filter-group {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+
+        .filter-group:last-child {
+            border-bottom: none;
+        }
+
+        .filter-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+
+        .filter-list li {
+            margin-bottom: 10px;
+        }
+
+        .filter-list a {
+            color: var(--text-color);
+            transition: 0.3s;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .filter-list a:hover,
+        .filter-list a.active {
+            color: var(--primary-color);
+            padding-left: 5px;
+        }
+
+        .search-bar {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .search-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container navbar">
+            <a href="index.html" class="logo">Fowzi<span>Store</span></a>
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html" class="active">Shop</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="nav-icons">
+                <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Our Products</h1>
+            <p>Explore our wide range of premium products</p>
+        </div>
+    </div>
+
+    <div class="container shop-container">
+        <!-- Sidebar -->
+        <aside class="filter-sidebar">
+            <div class="filter-group">
+                <h3 class="filter-title">Categories</h3>
+                <ul class="filter-list" id="categoryFilter">
+                    <li><a href="#" data-category="all" class="active">All Categories</a></li>
+                    <li><a href="#" data-category="electronics">Electronics</a></li>
+                    <li><a href="#" data-category="fashion">Fashion</a></li>
+                    <li><a href="#" data-category="home">Home & Living</a></li>
+                    <li><a href="#" data-category="beauty">Beauty</a></li>
+                </ul>
+            </div>
+
+            <div class="filter-group">
+                <h3 class="filter-title">Price Range</h3>
+                <input type="range" min="0" max="1000" value="1000" id="priceRange" style="width: 100%;">
+                <p>Max Price: $<span id="priceValue">1000</span></p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            <div class="search-bar">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search products...">
+                <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="product-grid" id="productGrid">
+                <!-- Products loaded by JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-col">
+                <h3>FowziStore</h3>
+                <p>Your one-stop shop for premium products.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="products.html">Shop</a>
+                <a href="cart.html">Cart</a>
+            </div>
+            <div class="footer-col">
+                <h3>Contact</h3>
+                <p>+252 61 5000000</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 FowziStore. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const productGrid = document.getElementById('productGrid');
+            const searchInput = document.getElementById('searchInput');
+            const categoryLinks = document.querySelectorAll('#categoryFilter a');
+            const priceRange = document.getElementById('priceRange');
+            const priceValue = document.getElementById('priceValue');
+
+            let currentCategory = 'all';
+            let currentData = getProducts();
+
+            // Check URL Params for category
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryParam = urlParams.get('category');
+            if (categoryParam) {
+                currentCategory = categoryParam;
+                updateActiveCategory(currentCategory);
+            }
+
+            function render(items) {
+                if (items.length === 0) {
+                    productGrid.innerHTML = '<p>No products found matching your criteria.</p>';
+                    return;
+                }
+                productGrid.innerHTML = items.map(p => createProductCard(p)).join('');
+            }
+
+            function filterProducts() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const maxPrice = parseInt(priceRange.value);
+
+                const filtered = currentData.filter(p => {
+                    const matchesCategory = currentCategory === 'all' || p.category === currentCategory;
+                    const matchesSearch = p.name.toLowerCase().includes(searchTerm);
+                    const matchesPrice = p.price <= maxPrice;
+                    return matchesCategory && matchesSearch && matchesPrice;
+                });
+
+                render(filtered);
+            }
+
+            function updateActiveCategory(cat) {
+                categoryLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.dataset.category === cat) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // Event Listeners
+            searchInput.addEventListener('input', filterProducts);
+
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentCategory = e.target.dataset.category;
+                    updateActiveCategory(currentCategory);
+                    filterProducts();
+                });
+            });
+
+            priceRange.addEventListener('input', (e) => {
+                priceValue.textContent = e.target.value;
+                filterProducts();
+            });
+
+            // Initial Render
+            filterProducts();
+
+            // Mobile Menu
+            document.getElementById('hamburger').addEventListener('click', () => {
+                document.getElementById('navLinks').classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+
+</html>
